@@ -20,7 +20,7 @@ public record CustomerService(
         // todo: check if email not taken
         customerRepository.saveAndFlush(customer);
         FraudCheckResponse fraudCheckResponse = restTemplate.getForEntity(
-                "http://localhost:8070/api/v1/fraud/{customerId}/check",
+                "http://localhost:8070/api/v1/frauds/{customerId}/check",
                 FraudCheckResponse.class,
                 customer.getId()
         ).getBody();
