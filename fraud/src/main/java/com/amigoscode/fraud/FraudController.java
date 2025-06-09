@@ -1,0 +1,23 @@
+package com.amigoscode.fraud;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("api/v1/frauds")
+public class FraudController {
+    private final FraudCheckService fraudCheckService;
+
+    @GetMapping("{customerId}/check")
+    public FraudCheckResponse checkFraud(@PathVariable final Long customerId) {
+        final Boolean isFraudster = fraudCheckService.isFraudulentCustomer(customerId);
+
+        return FraudCheckResponse.builder()
+                .isFraudster(isFraudster)
+                .build();
+    }
+}
