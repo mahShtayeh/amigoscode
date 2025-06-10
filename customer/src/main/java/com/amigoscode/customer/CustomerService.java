@@ -3,13 +3,15 @@ package com.amigoscode.customer;
 
 import com.amigoscode.clients.fraud.FraudCheckResponse;
 import com.amigoscode.clients.fraud.FraudClient;
+import com.amigoscode.clients.fraud.NotificationClient;
+import com.amigoscode.clients.fraud.NotificationRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import org.springframework.web.client.RestTemplate;
 
 @Service
 public record CustomerService(
         CustomerRepository customerRepository,
+        NotificationClient notificationClient,
         FraudClient fraudClient
 ) {
     public void registerCustomer(CustomerRegistrationRequest customerRegistrationRequest) {
@@ -25,6 +27,11 @@ public record CustomerService(
 
         Assert.notNull(fraudCheckResponse, "Invalid fraud check response");
         Assert.isTrue(!fraudCheckResponse.isFraudster(), "Fraudster customer");
-        // todo: Send notifications
+
+        notificationClient.sendNotification(NotificationRequest.builder()
+                        .toCustomerId(customer.getId())
+                        .toCustomerEmail(customer.getEmail())
+                        .message(String.format("New Customer created with ID: %d", customer.getId()))
+                .build());
     }
 }
