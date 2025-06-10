@@ -1,6 +1,8 @@
 package com.amigoscode.customer;
 
 
+import com.amigoscode.clients.fraud.FraudCheckResponse;
+import com.amigoscode.clients.fraud.FraudClient;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
@@ -8,7 +10,7 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public record CustomerService(
         CustomerRepository customerRepository,
-        RestTemplate restTemplate
+        FraudClient fraudClient
 ) {
     public void registerCustomer(CustomerRegistrationRequest customerRegistrationRequest) {
         Customer customer = Customer.builder()
@@ -19,11 +21,7 @@ public record CustomerService(
         // todo: check if email is valid
         // todo: check if email not taken
         customerRepository.saveAndFlush(customer);
-        FraudCheckResponse fraudCheckResponse = restTemplate.getForEntity(
-                "http://FRAUD/api/v1/frauds/{customerId}/check",
-                FraudCheckResponse.class,
-                customer.getId()
-        ).getBody();
+        FraudCheckResponse fraudCheckResponse = fraudClient.checkFraud(customer.getId());
 
         Assert.notNull(fraudCheckResponse, "Invalid fraud check response");
         Assert.isTrue(!fraudCheckResponse.isFraudster(), "Fraudster customer");
