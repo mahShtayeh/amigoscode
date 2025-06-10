@@ -31,7 +31,7 @@ public record CustomerService(
         notificationClient.sendNotification(NotificationRequest.builder()
                         .toCustomerId(customer.getId())
                         .toCustomerEmail(customer.getEmail())
-                        .message(String.format("New Customer created with ID: %d", customer.getId()))
+                        .message(String.format("Hi %s, Welcome to Amigoscode...", customer.getFirstName()))
                 .build());
     }
 }
