@@ -18,6 +18,9 @@ spring:
         format_sql: true
     show-sql: true
 
+  zipkin:
+    baseUrl: http://localhost:9411
+
 eureka:
   client:
     service-url:
