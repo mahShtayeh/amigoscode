@@ -1,5 +1,7 @@
 package com.amigoscode.notification;
 
+import com.amigoscode.clients.fraud.NotificationRequest;
+import com.amigoscode.clients.fraud.NotificationResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

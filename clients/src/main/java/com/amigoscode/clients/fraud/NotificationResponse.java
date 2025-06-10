@@ -1,4 +1,4 @@
-package com.amigoscode.notification;
+package com.amigoscode.clients.fraud;
 
 import lombok.Builder;
 

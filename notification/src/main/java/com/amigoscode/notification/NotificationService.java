@@ -1,5 +1,6 @@
 package com.amigoscode.notification;
 
+import com.amigoscode.clients.fraud.NotificationRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
