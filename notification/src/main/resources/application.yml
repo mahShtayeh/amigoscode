@@ -1,0 +1,11 @@
+server:
+  port: 8060
+
+spring:
+  application:
+    name: notification
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8765/eureka
