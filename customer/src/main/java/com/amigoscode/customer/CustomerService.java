@@ -1,17 +1,19 @@
 package com.amigoscode.customer;
 
 
+import com.amigoscode.amqp.NotificationMQProperties;
+import com.amigoscode.amqp.RabbitMQMessageProducer;
 import com.amigoscode.clients.fraud.FraudCheckResponse;
 import com.amigoscode.clients.fraud.FraudClient;
-import com.amigoscode.clients.fraud.NotificationClient;
 import com.amigoscode.clients.fraud.NotificationRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 @Service
 public record CustomerService(
+        NotificationMQProperties notificationMQProperties,
+        RabbitMQMessageProducer messageProducer,
         CustomerRepository customerRepository,
-        NotificationClient notificationClient,
         FraudClient fraudClient
 ) {
     public void registerCustomer(CustomerRegistrationRequest customerRegistrationRequest) {
@@ -28,10 +30,14 @@ public record CustomerService(
         Assert.notNull(fraudCheckResponse, "Invalid fraud check response");
         Assert.isTrue(!fraudCheckResponse.isFraudster(), "Fraudster customer");
 
-        notificationClient.sendNotification(NotificationRequest.builder()
+        messageProducer.publish(
+                NotificationRequest.builder()
                         .toCustomerId(customer.getId())
                         .toCustomerEmail(customer.getEmail())
                         .message(String.format("Hi %s, Welcome to Amigoscode...", customer.getFirstName()))
-                .build());
+                .build(),
+                notificationMQProperties.getInternalExchange(),
+                notificationMQProperties.getNotificationRoutingKey()
+        );
     }
 }
