@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: fraud
-          image: amigoscode/fraud
+          image: mahshtayeh227/fraud
           imagePullPolicy: Always
           ports:
             - containerPort: 8070

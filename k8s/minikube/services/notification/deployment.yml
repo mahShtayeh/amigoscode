@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: notification
-          image: amigoscode/notification
+          image: mahshtayeh227/notification
           imagePullPolicy: Always
           ports:
             - containerPort: 8060
