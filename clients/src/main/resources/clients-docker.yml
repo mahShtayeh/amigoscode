@@ -1,0 +1,7 @@
+clients:
+  customer:
+    url: http://customer:8080
+  fraud:
+    url: http://fraud:8070
+  notification:
+    url: http://notificaion:8060
