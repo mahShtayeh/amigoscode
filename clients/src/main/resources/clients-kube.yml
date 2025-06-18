@@ -1,0 +1,7 @@
+clients:
+  customer:
+    url: http://customer
+  fraud:
+    url: http://fraud
+  notification:
+    url: http://notificaion
